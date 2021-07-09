@@ -1,6 +1,6 @@
 // Write your "projects" router here!
 const express = require('express');
-const { checkProjectExists } = require('./projects-middleware');
+const { checkProjectExists, validateProject } = require('./projects-middleware');
 
 const projects = require('./projects-model');
 
@@ -20,6 +20,16 @@ router.get("/:id", checkProjectExists, (req, res, next) => {
     .then((resp) => {
         res.status(200).json(resp);
     }).catch(next);
+})
+
+router.post("/", validateProject, (req, res, next) => {
+    const neoProject = req.body;
+
+    projects.insert(neoProject)
+        .then((resp => {
+            res.status(201).json(resp);
+        }))
+        .catch(next);
 })
 
 module.exports = router;

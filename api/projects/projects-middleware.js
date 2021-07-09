@@ -20,6 +20,19 @@ const checkProjectExists = (req, res, next) => {
         })
 }
 
+const validateProject = (req, res, next) => {
+    const neoPost = req.body;
+
+    if (!neoPost.name) {
+        res.status(400).json({ message: "name field is required "});
+    } else if (!neoPost.description) {
+        res.status(400).json({ message: "description field is required "});
+    } else {
+        next();
+    }
+}
+
 module.exports = {
-    checkProjectExists
+    checkProjectExists,
+    validateProject
 }
