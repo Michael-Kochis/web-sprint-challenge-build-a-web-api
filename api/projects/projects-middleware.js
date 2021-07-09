@@ -23,7 +23,9 @@ const checkProjectExists = (req, res, next) => {
 const validateProject = (req, res, next) => {
     const neoPost = req.body;
 
-    if (!neoPost.name) {
+    if (!neoPost) {
+        res.status(400).json({ message: "no project object sent as JSON" })
+    } else if (!neoPost.name) {
         res.status(400).json({ message: "name field is required "});
     } else if (!neoPost.description) {
         res.status(400).json({ message: "description field is required "});
@@ -32,7 +34,20 @@ const validateProject = (req, res, next) => {
     }
 }
 
+const validateCompleted = (req, res, next) => {
+    const neoPost = req.body;
+
+    if (!neoPost) {
+        res.status(400).json({ message: "no project object sent as JSON" })
+    } else if (neoPost.completed === undefined || neoPost.completed === null) {
+        res.status(400).json({ message: "after initial creation, completed field is required "});
+    } else {
+        next();
+    }
+}
+
 module.exports = {
     checkProjectExists,
+    validateCompleted,
     validateProject
 }

@@ -15,10 +15,6 @@ server.use(cors() );
 server.use('/api/projects', projectRouter);
 server.use('/api/actions', actionRouter);
 
-server.use("/", (req, res) => {
-    res.status(200).json({ message: "this server exists" })
-})
-
 server.use('*', (req, res) => {
     res.status(404).json({ message: "no endpoint exists for that address" })
 })
@@ -27,10 +23,14 @@ const errorHandler = (err, req, res, next) => {
     const status = err.status || 500;
     res.status(status).json({
         message: "Undefined error message",
-        err: err
+        err: err.message
     })
     next();
 }
+
+// server.use("/", (req, res) => {
+//     res.status(200).json({ message: "this server exists" })
+// })
 
 server.use(errorHandler);
 
